@@ -32,6 +32,9 @@ class CreateTablePengajuan extends Migration
      */
     public function down()
     {
+        Schema::create('pengajuans', function (Blueprint $table) {
+            $table->dropForeign('pengajuans_id_anggota_foreign');
+        });
         Schema::dropIfExists('pengajuan');
     }
 }
