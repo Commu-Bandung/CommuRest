@@ -13,3 +13,9 @@ Route::get('perusahaan/profile/{id}','PerusahaanController@profileId');
 Route::post('perusahaan/add','PerusahaanController@add');
 Route::put('perusahaan/update/{id}','PerusahaanController@updatePerusahaan');
 Route::delete('perusahaan/del/{id}','PerusahaanCOntroller@deletePerusahaan');
+
+Route::post('anggota/add','AnggotaController@addAnggota');
+Route::put('anggota/update/{id}','AnggotaController@updateAnggota');
+Route::delete('anggota/del/{id}','AnggotaController@deleteAnggota');
+Route::get('anggota','AnggotaController@showAll');
+Route::get('anggota/profile/{id}','AnggotaController@profileId');
