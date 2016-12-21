@@ -14,8 +14,15 @@ class PerusahaanController extends Controller
     protected $rules = [
         'nama'      => 'required',
         'alamat'    => 'required|min:15',
-        'email'     => 'required|email',
+        'email'     => 'required|email:perusahaans',
         'password'  => 'required|min:6',
+        'deskripsi' => 'required|min:10'
+
+    ];
+    protected $rulesupdt = [
+        'nama'      => 'required',
+        'alamat'    => 'required|min:15',
+        'email'     => 'required|email:perusahaans',
         'deskripsi' => 'required|min:10'
 
     ];
@@ -50,7 +57,14 @@ class PerusahaanController extends Controller
             }
             else
             {
-                $perusahaan = $perusahaan->create($request->all());
+                $perusahaan = $perusahaan->create([
+                    'nama'          => $request->nama,
+                    'alamat'        => $request->alamat,
+                    'email'         => $request->email,
+                    'api_token'     => bcrypt($request->email),
+                    'password'      => bcrypt($request->password),
+                    'deskripsi'     => $request->deskripsi,
+                ]);
 
                 $response = fractal()
                     ->item($perusahaan)
@@ -86,7 +100,7 @@ class PerusahaanController extends Controller
         }
         try
         {
-            $validator = \Validator::make($request->all(), $this->rules);
+            $validator = \Validator::make($request->all(), $this->rulesupdt);
             if($validator->fails())
             {
                 return response()->json([
@@ -97,7 +111,12 @@ class PerusahaanController extends Controller
             else
             {
               $perusahaan = perusahaan::find($id);
-              $perusahaan->update($request->all());
+              $perusahaan->update([
+                    'nama'          => $request->nama,
+                    'alamat'        => $request->alamat,
+                    'email'         => $request->email,
+                    'deskripsi'     => $request->deskripsi,
+                ]);
 
                 $response = fractal()
                     ->item($perusahaan)

@@ -19,3 +19,5 @@ Route::put('anggota/update/{id}','AnggotaController@updateAnggota');
 Route::delete('anggota/del/{id}','AnggotaController@deleteAnggota');
 Route::get('anggota','AnggotaController@showAll');
 Route::get('anggota/profile/{id}','AnggotaController@profileId');
+
+Route::post('auth/register','RegistrasiController@register');

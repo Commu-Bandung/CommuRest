@@ -14,6 +14,7 @@ class PerusahaanTransformer extends TransformerAbstract
             'nama'      => $perusahaan->nama,
             'alamat'    => $perusahaan->alamat,
             'email'     => $perusahaan->email,
+            'api_token' => $perusahaan->api_token,
             'deskrisi'  => $perusahaan->deskripsi,
             'registered'=> $perusahaan->created_at->diffForHumans(),
         ];

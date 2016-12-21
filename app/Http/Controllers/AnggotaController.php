@@ -13,8 +13,17 @@ class AnggotaController extends Controller
 {
     protected $rules = [
         'nama'          => 'required',
-        'email'         => 'required|email',
+        'email'         => 'required|email|unique:anggotas',
         'password'      => 'required|min:6',
+        'komunitas'     => 'required',
+        'kampus'        => 'required',
+        'alamatKampus'  => 'required|min:15',
+        'deskripsi'     => 'required'
+
+    ];
+    protected $rulesupdt = [
+        'nama'          => 'required',
+        'email'         => 'required|email|unique:anggotas',
         'komunitas'     => 'required',
         'kampus'        => 'required',
         'alamatKampus'  => 'required|min:15',
@@ -40,7 +49,16 @@ class AnggotaController extends Controller
             }
             else
             {
-                $anggota = $anggota->create($request->all());
+                $anggota = $anggota->create([
+                    'nama'          => $request->nama,
+                    'email'         => $request->email,
+                    'password'      => bcrypt($request->password),
+                    'api_token'     => bcrypt($request->email),
+                    'komunitas'     => $request->komunitas,
+                    'kampus'        => $request->kampus,
+                    'alamatKampus'  => $request->alamatKampus,
+                    'deskripsi'     => $request->deskripsi,
+                ]);
 
                 $response = fractal()
                     ->item($anggota)
@@ -65,7 +83,7 @@ class AnggotaController extends Controller
         }
         try
         {
-            $validator = \Validator::make($request->all(), $this->rules);
+            $validator = \Validator::make($request->all(), $this->rulesupdt);
             if($validator->fails())
             {
                 return response()->json([
@@ -76,7 +94,14 @@ class AnggotaController extends Controller
             else
             {
               $anggota = anggota::find($id);
-              $anggota->update($request->all());
+              $anggota->update([
+                    'nama'          => $request->nama,
+                    'email'         => $request->email,
+                    'komunitas'     => $request->komunitas,
+                    'kampus'        => $request->kampus,
+                    'alamatKampus'  => $request->alamatKampus,
+                    'deskripsi'     => $request->deskripsi,
+                ]);
 
                 $response = fractal()
                     ->item($anggota)

@@ -32,6 +32,6 @@ class CreateTablePerusahaan extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('perusahaan');
+        Schema::dropIfExists('perusahaans');
     }
 }

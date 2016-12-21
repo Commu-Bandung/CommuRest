@@ -22,7 +22,6 @@ class CreateTableAnggota extends Migration
             $table->string('kampus');
             $table->string('alamatKampus');
             $table->string('deskripsi');
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ class CreateTableAnggota extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('anggota');
+        Schema::dropIfExists('anggotas');
     }
 }

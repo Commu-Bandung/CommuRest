@@ -8,7 +8,7 @@ use App\pengajuan;
 class anggota extends Model
 {
     protected $fillable = [
-        'nama', 'email', 'password', 'komunitas','kampus','alamatKampus','deskripsi',
+        'nama', 'email', 'password', 'komunitas','kampus','alamatKampus','deskripsi', 'api_token'
     ];
 
 

@@ -18,6 +18,7 @@ class AnggotaTransformer extends TransformerAbstract
             'id'        => $anggota->id,
             'nama'      => $anggota->nama,
             'email'     => $anggota->email,
+            'api_token' => $anggota->api_token,
             'komunitas' => $anggota->komunitas,
             'kampus'    => $anggota->kampus,
             'alamat'    => $anggota->alamatKampus,
