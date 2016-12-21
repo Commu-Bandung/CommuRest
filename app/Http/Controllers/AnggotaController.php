@@ -23,7 +23,6 @@ class AnggotaController extends Controller
     ];
     protected $rulesupdt = [
         'nama'          => 'required',
-        'email'         => 'required|email|unique:anggotas',
         'komunitas'     => 'required',
         'kampus'        => 'required',
         'alamatKampus'  => 'required|min:15',
@@ -96,7 +95,6 @@ class AnggotaController extends Controller
               $anggota = anggota::find($id);
               $anggota->update([
                     'nama'          => $request->nama,
-                    'email'         => $request->email,
                     'komunitas'     => $request->komunitas,
                     'kampus'        => $request->kampus,
                     'alamatKampus'  => $request->alamatKampus,

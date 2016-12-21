@@ -13,8 +13,12 @@ class AdminController extends Controller
 {
     protected $rules = [
         'nama'      => 'required',
-        'email'     => 'required|email',
+        'email'     => 'required|email|unique:admins',
         'password'  => 'required|min:6'
+
+    ];
+    protected $rulesupdt = [
+        'nama'      => 'required',
 
     ];
 
@@ -56,7 +60,12 @@ class AdminController extends Controller
             }
             else
             {
-                $admin = $admin->create($request->all());
+                $admin = $admin->create([
+                    'nama'      => $request->nama,
+                    'email'     => $request->email,
+                    'api_token' => bcrypt($request->email),
+                    'password'  => bcrypt($request->password),
+                ]);
 
                 $response = fractal()
                     ->item($admin)
@@ -81,7 +90,7 @@ class AdminController extends Controller
         }
         try
         {
-            $validator = \Validator::make($request->all(), $this->rules);
+            $validator = \Validator::make($request->all(), $this->rulesupdt);
             if($validator->fails())
             {
                 return response()->json([
@@ -92,7 +101,9 @@ class AdminController extends Controller
             else
             {
               $admin = admin::find($id);
-              $admin->update($request->all());
+              $admin->update([
+                    'nama'      => $request->nama,
+              ]);
 
                 $response = fractal()
                     ->item($admin)

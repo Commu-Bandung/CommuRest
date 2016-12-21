@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableAdmin extends Migration
+class UpdateTableAdmin extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateTableAdmin extends Migration
      */
     public function up()
     {
-        Schema::create('admins', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nama');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamps();
+        Schema::table('admins', function(Blueprint $table) {
+            $table->string('api_token')->after('email');
         });
     }
 
@@ -29,6 +25,8 @@ class CreateTableAdmin extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admins');
+        Schema::table('admin', function(Blueprint $table) {
+            $table->dropColumn('api_token');
+        });
     }
 }
