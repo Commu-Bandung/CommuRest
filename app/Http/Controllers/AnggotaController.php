@@ -51,7 +51,7 @@ class AnggotaController extends Controller
                 $anggota = $anggota->create([
                     'nama'          => $request->nama,
                     'email'         => $request->email,
-                    'password'      => bcrypt($request->password),
+                    'password'      => $request->password,
                     'api_token'     => bcrypt($request->email),
                     'komunitas'     => $request->komunitas,
                     'kampus'        => $request->kampus,
