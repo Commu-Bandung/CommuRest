@@ -23,3 +23,4 @@ Route::get('anggota/profile/{id}','AnggotaController@profileId');
 Route::post('auth/register','RegistrasiController@register');
 
 Route::post('anggota/login','LoginController@loginAnggota');
+Route::post('admin/login','LoginController@loginAdmin');
