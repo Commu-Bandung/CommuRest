@@ -5,7 +5,7 @@ namespace App\Transformers;
 use App\pengajuan;
 use League\Fractal\TransformerAbstract;
 
-class PengajuanTransformer extends  TransformerAbstract{
+class ProposalTransformer extends  TransformerAbstract{
     function transform(pengajuan $pengajuan)
     {
         return [
