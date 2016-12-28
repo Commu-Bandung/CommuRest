@@ -18,7 +18,7 @@ class LoginController extends Controller
         'email'     => 'required|email',
         'password'  => 'required'
     ];
-    public function loginAll(Request $request)
+    public function __invoke(Request $request)
     {       
         $email_in        = $request->email;
         $password_in     = $request->password;        

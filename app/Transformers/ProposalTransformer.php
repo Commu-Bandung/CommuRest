@@ -10,6 +10,7 @@ class ProposalTransformer extends  TransformerAbstract{
     {
         return [
             'id'            => $pengajuan->id,
+            'id_anggota'    => $pengajuan->id_anggota,
             'proposal'      => $pengajuan->proposal,
             'status_valid'  => $pengajuan->status_valid,
             'status_rev'    => $pengajuan->status_rev,

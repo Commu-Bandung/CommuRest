@@ -22,6 +22,13 @@ Route::get('anggota/profile/{id}','AnggotaController@profileId');
 
 Route::post('auth/register','RegistrasiController@register');
 
-Route::post('auth/login','LoginController@loginAll');
+Route::post('auth/login','LoginController');
 
 Route::post('anggota/ajukan','ProposalController@ajukan');
+Route::get('anggota/pengajuanku/{id}','ProposalController@showPengajuanByUser');
+Route::get('pengajuans','ProposalController@showPengajuan');
+Route::get('pengajuans/detail/{id}','ProposalController@detailPengajuan');
+Route::put('admin/validasi/{id}','ProposalController@validasiPersyaratan');
+Route::get('perusahaan/pengajuan','ProposalController@showPengajuanValid');
+Route::put('perusahaan/review/{id}','ProposalController@reviewProposal');
+Route::get('anggota/hasil/{id}','ProposalController@viewHasilReview');
