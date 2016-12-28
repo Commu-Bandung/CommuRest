@@ -181,4 +181,15 @@ class ProposalController extends Controller
         return response()->json($response, 201);
 
     }
+
+    public function showProposalDiterima()
+    {
+        $response = DB::table('pengajuans')
+                            ->where([
+                                'status_valid'      => 'terima',
+                                'status_rev'        => 'terima',
+                            ])->get();
+
+        return response()->json($response, 201);
+    }
 }

@@ -32,3 +32,5 @@ Route::put('admin/validasi/{id}','ProposalController@validasiPersyaratan');
 Route::get('perusahaan/pengajuan','ProposalController@showPengajuanValid');
 Route::put('perusahaan/review/{id}','ProposalController@reviewProposal');
 Route::get('anggota/hasil/{id}','ProposalController@viewHasilReview');
+
+Route::get('perusahaan/diterima','ProposalController@showProposalDiterima');
