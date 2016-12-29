@@ -5,7 +5,7 @@ namespace App\Transformers;
 use App\kerjasama;
 use League\Fractal\TransformerAbstract;
 
-class AdminTransformer extends  TransformerAbstract
+class KerjasamaTransformer extends  TransformerAbstract
 {
     public function transform(kerjasama $kerjasama)
     {

@@ -39,3 +39,9 @@ Route::put('perusahaan/ubahbantuan/{id}','BantuanController@updateBantuan');
 Route::get('anggota/viewbantuan/{id}','BantuanController@viewBantuan');
 Route::get('perusahaan/semuabantuan','BantuanController@showBantunaAll');
 Route::get('perusahaan/bantuan/{id}','BantuanController@showById');
+
+
+Route::post('perusahaan/buatkerjasama','KerjasamaController@createKerjasama');
+Route::put('perusahaan/ubahkerjasama/{id}','KerjasamaController@updateKerjasama');
+Route::get('perusahaan/showkerjasama','KerjasamaController@showAll');
+Route::get('anggota/kerjasamaku/{id}','KerjasamaController@showByIdAnggota');
