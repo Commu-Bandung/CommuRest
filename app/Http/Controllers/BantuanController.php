@@ -101,9 +101,25 @@ class BantuanController extends Controller
         $response = DB::table('bantuans')
                             ->join('pengajuans','bantuans.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
-                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','bantuans.jumlah_dana')
+                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','bantuans.jumlah_dana','bantuans.id_pengajuan')
                             ->where('id_anggota',$id)
                             ->get();
         return response()->json($response, 201);
+    }
+
+    public function showBantunaAll(bantuan $bantuan)
+    {
+        $bantuan = DB::table('bantuans')
+                            ->join('pengajuans','bantuans.id_pengajuan','=','pengajuans.id')
+                            ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
+                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','bantuans.jumlah_dana','bantuans.id_pengajuan')
+                            ->get();
+        return response()->json($bantuan, 201);
+    }
+    public function showById(bantuan $bantuan, $id)
+    {
+        $bantuan = bantuan::find($id);
+
+        return response()->json($bantuan, 201);
     }
 }
