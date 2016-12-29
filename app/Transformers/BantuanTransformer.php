@@ -5,7 +5,7 @@ namespace App\Transformers;
 use App\bantuan;
 use League\Fractal\TransformerAbstract;
 
-class AdminTransformer extends  TransformerAbstract
+class BantuanTransformer extends  TransformerAbstract
 {
     public function transform(bantuan $bantuan)
     {

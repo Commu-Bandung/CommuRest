@@ -34,3 +34,4 @@ Route::put('perusahaan/review/{id}','ProposalController@reviewProposal');
 Route::get('anggota/hasil/{id}','ProposalController@viewHasilReview');
 
 Route::get('perusahaan/diterima','ProposalController@showProposalDiterima');
+Route::post('perusahaan/bantuan','BantuanController@createBantuan');

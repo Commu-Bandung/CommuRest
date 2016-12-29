@@ -11,8 +11,8 @@ use App\Transformers\BantuanTransformer;
 class BantuanController extends Controller
 {
     protected $rules = [
-        'id_pengajuan'      => 'required',
-        'jumlah_dana'       => 'required'
+        'id_pengajuan'      => 'required|integer',
+        'jumlah_dana'       => 'required|numeric'
     ];
 
     public function createBantuan(Request $request, bantuan $bantuan)
