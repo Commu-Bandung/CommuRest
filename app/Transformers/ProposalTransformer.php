@@ -12,6 +12,7 @@ class ProposalTransformer extends  TransformerAbstract{
             'id'            => $pengajuan->id,
             'id_anggota'    => $pengajuan->id_anggota,
             'proposal'      => $pengajuan->proposal,
+            'event'         => $pengajuan->event,
             'status_valid'  => $pengajuan->status_valid,
             'status_rev'    => $pengajuan->status_rev,
             'published'     => $pengajuan->created_at->diffForHumans(),

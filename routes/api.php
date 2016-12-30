@@ -32,6 +32,7 @@ Route::put('admin/validasi/{id}','ProposalController@validasiPersyaratan');
 Route::get('perusahaan/pengajuan','ProposalController@showPengajuanValid');
 Route::put('perusahaan/review/{id}','ProposalController@reviewProposal');
 Route::get('anggota/hasil/{id}','ProposalController@viewHasilReview');
+Route::get('admin/carievent/{event}','ProposalController@seachEvent');
 
 Route::get('perusahaan/diterima','ProposalController@showProposalDiterima');
 Route::post('perusahaan/bantuan','BantuanController@createBantuan');

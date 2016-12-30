@@ -16,6 +16,7 @@ class ProposalController extends Controller
     protected $rules = [
         'id_anggota'        => 'required',
         'proposal'          => 'required',
+        'event'             => 'required'
     ];
     protected $validasi = [
         'status_valid'      => 'required', 
@@ -44,6 +45,7 @@ class ProposalController extends Controller
                 $pengajuan = $pengajuan->create([
                     'id_anggota'        => $request->id_anggota,
                     'proposal'          => $request->proposal,
+                    'event'             => $request->event,
                     'status_valid'      => 'belum',
                     'status_rev'        => 'belum',
                 ]);
@@ -55,7 +57,7 @@ class ProposalController extends Controller
 
                 return response()->json($response, 201);
             }
-            }
+        }
         catch (Exception $e)
         {
             \Log::info('Error creating data : ' .$e);
@@ -191,5 +193,13 @@ class ProposalController extends Controller
                             ])->get();
 
         return response()->json($response, 201);
+    }
+    public function seachEvent(Request $request, $event)
+    {
+        $hasilEvent = pengajuan::where('event','LIKE', '%' . $event . '%')->get();
+
+        return response()->json($hasilEvent, 200);
+
+
     }
 }
