@@ -143,4 +143,11 @@ class PerusahaanController extends Controller
             'pesan' => 'perusahaan sudah bangkrut/mengundurkan diri entahlah'
         ]);
     }
+    public function searchPerusahaan(Request $request, $perusahaan)
+    {
+        $pencarian = perusahaan::where('nama','LIKE','%' . $perusahaan . '%')
+                                    ->get();
+
+        return response()->json($pencarian, 200);
+    }
 }

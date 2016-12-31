@@ -145,4 +145,12 @@ class AnggotaController extends Controller
             ->transformWith(new AnggotaTransformer)
             ->toArray();       
     }
+
+    public function searchKomunitas(Request $request, $komunitas)
+    {
+        $pencarian = anggota::where('komunitas','LIKE','%' . $komunitas . '%')
+                                ->get();
+
+        return response()->json($pencarian, 200);
+    }
 }
