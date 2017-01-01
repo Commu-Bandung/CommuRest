@@ -16,7 +16,9 @@ class ProposalController extends Controller
     protected $rules = [
         'id_anggota'        => 'required',
         'proposal'          => 'required',
-        'event'             => 'required'
+        'event'             => 'required',
+        'kategori'          => 'required',
+        'deskripsi'         => 'required'
     ];
     protected $validasi = [
         'status_valid'      => 'required', 
@@ -46,6 +48,8 @@ class ProposalController extends Controller
                     'id_anggota'        => $request->id_anggota,
                     'proposal'          => $request->proposal,
                     'event'             => $request->event,
+                    'kategori'          => $request->kategori,
+                    'deskripsi'         => $request->deskripsi,
                     'status_valid'      => 'belum',
                     'status_rev'        => 'belum',
                 ]);
