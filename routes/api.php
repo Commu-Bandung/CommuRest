@@ -24,7 +24,9 @@ Route::get('admin/carikomunitas/{komunitas}','AnggotaController@searchKomunitas'
 
 Route::post('auth/register','RegistrasiController@register');
 
-Route::post('auth/login','LoginController');
+Route::post('auth/login/anggota','LoginController@anggota');
+Route::post('auth/login/admin','LoginController@admin');
+Route::post('auth/login/perusahaan','LoginController@perusahaan');
 
 Route::post('anggota/ajukan','ProposalController@ajukan');
 Route::get('anggota/pengajuanku/{id}','ProposalController@showPengajuanByUser');

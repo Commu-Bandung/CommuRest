@@ -18,7 +18,7 @@ class LoginController extends Controller
         'email'     => 'required|email',
         'password'  => 'required'
     ];
-    public function __invoke(Request $request)
+    public function anggota(Request $request)
     {       
         $email_in        = $request->email;
         $password_in     = $request->password;        
@@ -28,18 +28,62 @@ class LoginController extends Controller
                                 ['email',   '=',$email_in],
                                 ['password','=',$password_in],
                             ])->count();
+
+       if (!is_array($request->all()))
+        {
+            return ['error' => 'request harus berbentuk array'];
+        }
+        try
+        {
+            $validator = \Validator::make($request->all(), $this->rules);
+            if($validator->fails())
+            {
+                return response()->json([
+                    'login' => false,
+                    'errors'  => $validator->errors()->all()
+                ], 500);
+            }
+            
+            else if($loginAnggota > 0)
+            {
+              
+                $response = DB::table('anggotas')
+                                    ->where([
+                                        ['email',   '=',$email_in],
+                                        ['password','=',$password_in],
+                                    ])->get(); 
+                $success= true;
+
+
+                return response()->json(['data' => $response, 'login' => true], 201);
+            }
+            else
+            {
+                return response()->json([
+                    'login' => false
+                ], 200);
+            }
+        }
+        catch (Exception $e)
+        {
+            \Log::info('Error login  : ' .$e);
+            return response()->json(['login' => false], 500);
+        }   
+
+    }
+
+    public function admin(Request $request)
+    {
+        $email_in        = $request->email;
+        $password_in     = $request->password; 
+
         $loginAdmin = DB::table('admins')
                             ->where([
                                 ['email',   '=',$email_in],
                                 ['password','=',$password_in],
-                            ])->count();   
-        $loginPerusahaan = DB::table('perusahaans')
-                            ->where([
-                                ['email',   '=',$email_in],
-                                ['password','=',$password_in],
-                            ])->count();
+                            ])->count(); 
 
-       if (!is_array($request->all()))
+        if (!is_array($request->all()))
         {
             return ['error' => 'request harus berbentuk array'];
         }
@@ -63,20 +107,47 @@ class LoginController extends Controller
                                     ])->get(); 
 
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'login' => true], 201);
             }
-            else if($loginAnggota > 0)
+            else
             {
-              
-                $response = DB::table('anggotas')
-                                    ->where([
-                                        ['email',   '=',$email_in],
-                                        ['password','=',$password_in],
-                                    ])->get(); 
-                $success= true;
+                return response()->json([
+                    'login' => false
+                ], 200);
+            }
+        }
+        catch (Exception $e)
+        {
+            \Log::info('Error login  : ' .$e);
+            return response()->json(['login' => false], 500);
+        }  
 
 
-                return response()->json(['data' => $response, 'login' => $success], 200);
+    }
+
+    public function perusahaan(Request $request)
+    {
+        $email_in        = $request->email;
+        $password_in     = $request->password; 
+
+        $loginPerusahaan = DB::table('perusahaans')
+                            ->where([
+                                ['email',   '=',$email_in],
+                                ['password','=',$password_in],
+                            ])->count();
+        if (!is_array($request->all()))
+        {
+            return ['error' => 'request harus berbentuk array'];
+        }
+        try
+        {
+            $validator = \Validator::make($request->all(), $this->rules);
+            if($validator->fails())
+            {
+                return response()->json([
+                    'login' => false,
+                    'errors'  => $validator->errors()->all()
+                ], 500);
             }
             else if($loginPerusahaan > 0)
             {
@@ -101,7 +172,7 @@ class LoginController extends Controller
         {
             \Log::info('Error login  : ' .$e);
             return response()->json(['login' => false], 500);
-        }   
+        } 
 
     }
 
