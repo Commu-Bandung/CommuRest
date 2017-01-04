@@ -114,7 +114,7 @@ class KerjasamaController extends Controller
         $kerjasama = DB::table('kerjasamas')
                             ->join('pengajuans','kerjasamas.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
-                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','kerjasamas.produk','kerjasamas.jumlah','kerjasamas.id')
+                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','kerjasamas.produk','kerjasamas.jumlah','pengajuans.proposal','pengajuans.event')
                             ->where('id_anggota',$id)
                             ->get();
         return response()->json($kerjasama,201);

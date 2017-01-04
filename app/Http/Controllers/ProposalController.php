@@ -71,7 +71,8 @@ class ProposalController extends Controller
     }
     public function showPengajuanByUser(anggota $anggota,$id)
     {
-        $response = DB::table('pengajuans')->where('id_anggota',$id)->get();
+        $response = DB::table('pengajuans')
+                            ->where('id_anggota',$id)->get();
 
         return response()->json($response, 201);        
 

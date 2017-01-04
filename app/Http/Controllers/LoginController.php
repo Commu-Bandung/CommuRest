@@ -73,9 +73,10 @@ class LoginController extends Controller
                                         ['email',   '=',$email_in],
                                         ['password','=',$password_in],
                                     ])->get(); 
+                $success= true;
 
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'login' => $success], 200);
             }
             else if($loginPerusahaan > 0)
             {
@@ -87,13 +88,13 @@ class LoginController extends Controller
                                     ])->get(); 
 
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'login' => true], 201);
             }
             else
             {
                 return response()->json([
-                    'login' => 'email or password is wrong'
-                ], 404);
+                    'login' => false
+                ], 200);
             }
         }
         catch (Exception $e)
