@@ -13,6 +13,7 @@ class BantuanController extends Controller
 {
     protected $rules = [
         'id_pengajuan'      => 'required|integer',
+        'id_perusahaan'      => 'required|integer',
         'jumlah_dana'       => 'required|numeric'
     ];
     protected $rulesupdt = [
@@ -39,6 +40,7 @@ class BantuanController extends Controller
             {
                 $bantuan = $bantuan->create([
                     'id_pengajuan'        => $request->id_pengajuan,
+                    'id_perusahaan'        => $request->id_perusahaan,
                     'jumlah_dana'         => $request->jumlah_dana,
                 ]);
 
@@ -101,18 +103,21 @@ class BantuanController extends Controller
         $response = DB::table('bantuans')
                             ->join('pengajuans','bantuans.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
-                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','bantuans.jumlah_dana','bantuans.id_pengajuan')
+                            ->join('perusahaans','perusahaans.id','=','bantuans.id_perusahaan')
+                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','perusahaans.nama','perusahaans.alamat','perusahaans.email', 'bantuans.jumlah_dana','bantuans.id_pengajuan')
                             ->where('id_anggota',$id)
                             ->get();
         return response()->json($response, 201);
     }
 
-    public function showBantunaAll(bantuan $bantuan)
+    public function showBantunaAll(bantuan $bantuan,$id)
     {
         $bantuan = DB::table('bantuans')
                             ->join('pengajuans','bantuans.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
+                            ->join('perusahaans','perusahaans.id','=','bantuans.id_perusahaan')                            
                             ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','bantuans.jumlah_dana','pengajuans.proposal','pengajuans.kategori','pengajuans.event')
+                            ->where('perusahaans.id',$id)
                             ->get();
         return response()->json($bantuan, 201);
     }

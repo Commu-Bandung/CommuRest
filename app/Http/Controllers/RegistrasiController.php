@@ -35,14 +35,14 @@ class RegistrasiController extends Controller
                 return response()->json([
                     'created' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else
             {
                 $anggota = $anggota->create([
                     'nama'          => $request->nama,
                     'email'         => $request->email,
-                    'password'      => bcrypt($request->password),
+                    'password'      => $request->password,
                     'api_token'     => bcrypt($request->email),
                     'komunitas'     => $request->komunitas,
                     'kampus'        => $request->kampus,
@@ -55,7 +55,7 @@ class RegistrasiController extends Controller
                     ->transformWith(new AnggotaTransformer)
                     ->toArray();
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'created' => true ], 201);
             }
             }
         catch (Exception $e)

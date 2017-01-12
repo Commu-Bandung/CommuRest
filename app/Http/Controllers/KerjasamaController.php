@@ -13,6 +13,7 @@ class KerjasamaController extends Controller
 {
     protected $rules = [
         'id_pengajuan'      => 'required|integer',
+        'id_perusahaan'      => 'required|integer',
         'produk'            => 'required|string',
         'jumlah'            => 'required|numeric',
     ];
@@ -41,6 +42,7 @@ class KerjasamaController extends Controller
             {
                 $kerjasama = $kerjasama->create([
                     'id_pengajuan'   => $request->id_pengajuan,
+                    'id_perusahaan'   => $request->id_perusahaan,
                     'produk'         => $request->produk,
                     'jumlah'         => $request->jumlah,
                 ]);
@@ -99,12 +101,14 @@ class KerjasamaController extends Controller
         }
     }
 
-    public function showAll(kerjasama $kerjasama)
+    public function showAll(kerjasama $kerjasama,$id)
     {
         $kerjasama = DB::table('kerjasamas')
                             ->join('pengajuans','kerjasamas.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
+                            ->join('perusahaans','perusahaans.id','=','kerjasamas.id_perusahaan')
                             ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','kerjasamas.produk','kerjasamas.jumlah','kerjasamas.id')
+                            ->where('id_perusahaan',$id)
                             ->get();
         return response()->json($kerjasama, 201);
     }
@@ -114,7 +118,7 @@ class KerjasamaController extends Controller
         $kerjasama = DB::table('kerjasamas')
                             ->join('pengajuans','kerjasamas.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
-                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','kerjasamas.produk','kerjasamas.jumlah','pengajuans.proposal','pengajuans.event')
+                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus', 'perusahaans.nama','perusahaans.alamat','perusahaans.email','kerjasamas.produk','kerjasamas.jumlah','pengajuans.proposal','pengajuans.event')
                             ->where('id_anggota',$id)
                             ->get();
         return response()->json($kerjasama,201);
