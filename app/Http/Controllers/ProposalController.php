@@ -40,7 +40,7 @@ class ProposalController extends Controller
                 return response()->json([
                     'created' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else
             {
@@ -59,7 +59,7 @@ class ProposalController extends Controller
                     ->transformWith(new ProposalTransformer)
                     ->toArray();
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'created' => true], 201);
             }
         }
         catch (Exception $e)
