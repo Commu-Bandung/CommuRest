@@ -47,9 +47,9 @@ class ProposalController extends Controller
                 $pengajuan = $pengajuan->create([
                     'id_anggota'        => $request->id_anggota,
                     'proposal'          => $request->proposal,
-                    'event'             => $request->event,
                     'kategori'          => $request->kategori,
                     'deskripsi'         => $request->deskripsi,
+                    'event'             => $request->event,
                     'status_valid'      => 'belum',
                     'status_rev'        => 'belum',
                 ]);
