@@ -40,14 +40,14 @@ class RegistrasiController extends Controller
             else
             {
                 $anggota = $anggota->create([
-                    'nama'          => $request->nama,
-                    'email'         => $request->email,
-                    'password'      => $request->password,
-                    'api_token'     => bcrypt($request->email),
-                    'komunitas'     => $request->komunitas,
-                    'kampus'        => $request->kampus,
-                    'alamatKampus'  => $request->alamatKampus,
-                    'deskripsi'     => $request->deskripsi,
+                    'nama'              => $request->nama,
+                    'email'             => $request->email,
+                    'password'          => $request->password,
+                    'remember_token'    => bcrypt($request->email),
+                    'komunitas'         => $request->komunitas,
+                    'kampus'            => $request->kampus,
+                    'alamatKampus'      => $request->alamatKampus,
+                    'deskripsi'         => $request->deskripsi,
                 ]);
 
                 $response = fractal()
