@@ -13,11 +13,13 @@ class BantuanController extends Controller
 {
     protected $rules = [
         'id_pengajuan'      => 'required|integer',
-        'id_perusahaan'      => 'required|integer',
-        'jumlah_dana'       => 'required|numeric'
+        'id_perusahaan'     => 'required|integer',
+        'jumlah_dana'       => 'required|numeric',
+        'bukti'             => 'required',
     ];
     protected $rulesupdt = [
         'jumlah_dana'       => 'required',
+        'bukti'             => 'required',
     ];
 
     public function createBantuan(Request $request, bantuan $bantuan)
@@ -40,8 +42,9 @@ class BantuanController extends Controller
             {
                 $bantuan = $bantuan->create([
                     'id_pengajuan'        => $request->id_pengajuan,
-                    'id_perusahaan'        => $request->id_perusahaan,
+                    'id_perusahaan'       => $request->id_perusahaan,
                     'jumlah_dana'         => $request->jumlah_dana,
+                    'bukti'               => $request->bukti,
                 ]);
 
                 $response = fractal()
@@ -81,6 +84,7 @@ class BantuanController extends Controller
               $bantuan = bantuan::find($id);
               $bantuan->update([
                     'jumlah_dana'      => $request->jumlah_dana,
+                    'bukti'            => $request->bukti,
               ]);
 
                 $response = fractal()
@@ -104,7 +108,7 @@ class BantuanController extends Controller
                             ->join('pengajuans','bantuans.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
                             ->join('perusahaans','perusahaans.id','=','bantuans.id_perusahaan')
-                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','perusahaans.nama','perusahaans.alamat','perusahaans.email', 'bantuans.jumlah_dana','bantuans.id_pengajuan')
+                            ->select('perusahaans.nama','perusahaans.alamat','perusahaans.email','bantuans.jumlah_dana','bantuans.bukti','pengajuans.kategori','pengajuans.event')
                             ->where('id_anggota',$id)
                             ->get();
         return response()->json($response, 201);

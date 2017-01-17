@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class bantuan extends Model
 {
     protected $fillable = [
-        'id_pengajuan','jumlah_dana',
+        'id_pengajuan','id_perusahaan','jumlah_dana','bukti',
     ];
 
     
