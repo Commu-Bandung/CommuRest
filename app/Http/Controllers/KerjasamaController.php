@@ -118,6 +118,7 @@ class KerjasamaController extends Controller
         $kerjasama = DB::table('kerjasamas')
                             ->join('pengajuans','kerjasamas.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
+                            ->join('perusahaans','perusahaans.id','=','kerjasamas.id_perusahaan')
                             ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus', 'perusahaans.nama','perusahaans.alamat','perusahaans.email','kerjasamas.produk','kerjasamas.jumlah','pengajuans.proposal','pengajuans.event')
                             ->where('id_anggota',$id)
                             ->get();
