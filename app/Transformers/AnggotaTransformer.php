@@ -22,7 +22,7 @@ class AnggotaTransformer extends TransformerAbstract
             'komunitas' => $anggota->komunitas,
             'kampus'    => $anggota->kampus,
             'alamat'    => $anggota->alamatKampus,
-            'deskrpsi'  => $anggota->deskripsi,
+            'deskripsi'  => $anggota->deskripsi,
             'registered'=> $anggota->created_at->diffForHumans(),
         ];
     }
