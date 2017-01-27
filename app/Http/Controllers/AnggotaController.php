@@ -106,13 +106,13 @@ class AnggotaController extends Controller
                     ->transformWith(new AnggotaTransformer)
                     ->toArray();
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'updated' => true], 201);
             }
         }
         catch (Exception $e)
         {
             \Log::info('Error updating data anggota: ' .$e);
-            return response()->json(['created' => false], 500);
+            return response()->json(['updated' => false], 500);
         }
     }
 
