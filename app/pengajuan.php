@@ -8,7 +8,7 @@ use App\anggota;
 class pengajuan extends Model
 {
     protected $fillable = [
-        'id_anggota','proposal','kategori','deskripsi','event', 'status_valid','status_rev',
+        'id_anggota','proposal','kategori','deskripsi','event', 'status_valid',
     ];
 
     public function scopeLatestFirst($query)

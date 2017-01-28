@@ -12,8 +12,7 @@ use App\Transformers\BantuanTransformer;
 class BantuanController extends Controller
 {
     protected $rules = [
-        'id_pengajuan'      => 'required|integer',
-        'id_perusahaan'     => 'required|integer',
+        'id_review'         => 'required|integer',
         'jumlah_dana'       => 'required|numeric',
         'bukti'             => 'required',
     ];
@@ -41,8 +40,7 @@ class BantuanController extends Controller
             else
             {
                 $bantuan = $bantuan->create([
-                    'id_pengajuan'        => $request->id_pengajuan,
-                    'id_perusahaan'       => $request->id_perusahaan,
+                    'id_review'           => $request->id_review,
                     'jumlah_dana'         => $request->jumlah_dana,
                     'bukti'               => $request->bukti,
                 ]);
@@ -105,9 +103,10 @@ class BantuanController extends Controller
     public function viewBantuan(bantuan $bantuan, $id)
     {
         $response = DB::table('bantuans')
-                            ->join('pengajuans','bantuans.id_pengajuan','=','pengajuans.id')
+                            ->join('reviewproposals','bantuans.id_review','=','reviewproposals.id')
+                            ->join('pengajuans','reviewproposals.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
-                            ->join('perusahaans','perusahaans.id','=','bantuans.id_perusahaan')
+                            ->join('perusahaans','perusahaans.id','=','reviewproposals.id_perusahaan')
                             ->select('perusahaans.nama','perusahaans.alamat','perusahaans.email','bantuans.jumlah_dana','bantuans.bukti','pengajuans.kategori','pengajuans.event')
                             ->where('id_anggota',$id)
                             ->get();
@@ -117,9 +116,10 @@ class BantuanController extends Controller
     public function showBantunaAll(bantuan $bantuan,$id)
     {
         $bantuan = DB::table('bantuans')
-                            ->join('pengajuans','bantuans.id_pengajuan','=','pengajuans.id')
+                            ->join('reviewproposals','bantuans.id_review','=','reviewproposals.id')        
+                            ->join('pengajuans','reviewproposals.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
-                            ->join('perusahaans','perusahaans.id','=','bantuans.id_perusahaan')                            
+                            ->join('perusahaans','perusahaans.id','=','reviewproposals.id_perusahaan')                            
                             ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','bantuans.jumlah_dana','pengajuans.proposal','pengajuans.kategori','pengajuans.event')
                             ->where('perusahaans.id',$id)
                             ->get();

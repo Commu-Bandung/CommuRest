@@ -34,7 +34,7 @@ Route::get('pengajuans','ProposalController@showPengajuan');
 Route::get('pengajuans/detail/{id}','ProposalController@detailPengajuan');
 Route::put('admin/validasi/{id}','ProposalController@validasiPersyaratan');
 Route::get('perusahaan/pengajuan','ProposalController@showPengajuanValid');
-Route::put('perusahaan/review/{id}','ProposalController@reviewProposal');
+Route::post('perusahaan/review','ProposalController@reviewProposal');
 Route::get('anggota/hasil/{id}','ProposalController@viewHasilReview');
 Route::get('admin/carievent/{event}','ProposalController@seachEvent');
 
@@ -48,5 +48,5 @@ Route::get('perusahaan/bantuan/{id}','BantuanController@showById');
 
 Route::post('perusahaan/buatkerjasama','KerjasamaController@createKerjasama');
 Route::put('perusahaan/ubahkerjasama/{id}','KerjasamaController@updateKerjasama');
-Route::get('perusahaan/showkerjasama{id}','KerjasamaController@showAll');
+Route::get('perusahaan/showkerjasama/{id}','KerjasamaController@showAll');
 Route::get('anggota/kerjasamaku/{id}','KerjasamaController@showByIdAnggota');

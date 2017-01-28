@@ -12,10 +12,9 @@ use App\Transformers\KerjasamaTransformer;
 class KerjasamaController extends Controller
 {
     protected $rules = [
-        'id_pengajuan'      => 'required|integer',
-        'id_perusahaan'      => 'required|integer',
-        'produk'            => 'required|string',
-        'jumlah'            => 'required|numeric',
+        'id_review'          => 'required|integer',
+        'produk'             => 'required|string',
+        'jumlah'             => 'required|numeric',
     ];
     protected $rulesupdt = [
         'produk'            => 'required|string',
@@ -41,8 +40,7 @@ class KerjasamaController extends Controller
             else
             {
                 $kerjasama = $kerjasama->create([
-                    'id_pengajuan'   => $request->id_pengajuan,
-                    'id_perusahaan'   => $request->id_perusahaan,
+                    'id_review'   => $request->id_review,
                     'produk'         => $request->produk,
                     'jumlah'         => $request->jumlah,
                 ]);
@@ -104,9 +102,10 @@ class KerjasamaController extends Controller
     public function showAll(kerjasama $kerjasama,$id)
     {
         $kerjasama = DB::table('kerjasamas')
-                            ->join('pengajuans','kerjasamas.id_pengajuan','=','pengajuans.id')
+                            ->join('reviewproposals','kerjasamas.id_review','=','reviewproposals.id')
+                            ->join('pengajuans','reviewproposals.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
-                            ->join('perusahaans','perusahaans.id','=','kerjasamas.id_perusahaan')
+                            ->join('perusahaans','perusahaans.id','=','reviewproposals.id_perusahaan')
                             ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','kerjasamas.produk','kerjasamas.jumlah','kerjasamas.id')
                             ->where('id_perusahaan',$id)
                             ->get();
@@ -116,9 +115,10 @@ class KerjasamaController extends Controller
     public function showByIdAnggota(kerjasama $kerjasama, $id)
     {
         $kerjasama = DB::table('kerjasamas')
-                            ->join('pengajuans','kerjasamas.id_pengajuan','=','pengajuans.id')
+                            ->join('reviewproposals','kerjasamas.id_review','=','reviewproposals.id')        
+                            ->join('pengajuans','reviewproposals.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
-                            ->join('perusahaans','perusahaans.id','=','kerjasamas.id_perusahaan')
+                            ->join('perusahaans','perusahaans.id','=','reviewproposals.id_perusahaan')
                             ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus', 'perusahaans.nama','perusahaans.alamat','perusahaans.email','kerjasamas.produk','kerjasamas.jumlah','pengajuans.proposal','pengajuans.event')
                             ->where('id_anggota',$id)
                             ->get();

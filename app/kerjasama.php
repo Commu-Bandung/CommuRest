@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class kerjasama extends Model
 {
     protected $fillable = [
-        'id_pengajuan','produk','jumlah',
+        'id_review','produk','jumlah',
     ];
 
     
 
-    public function pengajuan()
+    public function reviewproposal()
     {
-        return $this->belongsTo(pengajuan::class);
+        return $this->belongsTo(reviewproposal::class);
     }
 }

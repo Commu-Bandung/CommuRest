@@ -11,7 +11,7 @@ class KerjasamaTransformer extends  TransformerAbstract
     {
         return [
             'id'               => $kerjasama->id,
-            'id_pengajuan'     => $kerjasama->id_pengajuan,
+            'id_review'        => $kerjasama->id_review,
             'produk'           => $kerjasama->produk,
             'jumlah'           => $kerjasama->jumlah,
             'dibuat'           => $kerjasama->created_at->diffForHumans(),

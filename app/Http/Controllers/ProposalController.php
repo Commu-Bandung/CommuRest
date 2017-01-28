@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\pengajuan;
 use App\anggota;
+use App\reviewproposal;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Transformers\ProposalTransformer;
+use App\Transformers\ReviewTransformer;
 
 
 class ProposalController extends Controller
@@ -24,7 +26,9 @@ class ProposalController extends Controller
         'status_valid'      => 'required', 
     ];
     protected $review = [
-        'status_rev'      => 'required', 
+        'id_pengajuan'    => 'required',
+        'status'          => 'required', 
+        'id_perusahaan'   => 'required',
     ];
     public function ajukan(Request $request, pengajuan $pengajuan)
     {
@@ -51,7 +55,6 @@ class ProposalController extends Controller
                     'deskripsi'         => $request->deskripsi,
                     'event'             => $request->event,
                     'status_valid'      => 'belum',
-                    'status_rev'        => 'belum',
                 ]);
 
                 $response = fractal()
@@ -116,8 +119,6 @@ class ProposalController extends Controller
                 $pengajuan = pengajuan::find($id);
                 $pengajuan = $pengajuan->update([
                     'status_valid'      => $request->status_valid,
-                    'status_rev'        => 'belum',
-
                 ]);
 
                 $response = DB::table('pengajuans')
@@ -139,7 +140,7 @@ class ProposalController extends Controller
         return response()->json($response, 201);
     }
 
-    public function reviewProposal(Request $request, $id, pengajuan $pengajuan)
+    public function reviewProposal(Request $request, reviewproposal $reviewproposal)
     {
         if (!is_array($request->all()))
         {
@@ -157,16 +158,18 @@ class ProposalController extends Controller
             }
             else
             {
-                $pengajuan = pengajuan::find($id);
-                $pengajuan = $pengajuan->update([
-                    'status_rev'        => $request->status_rev,
-
+                $reviewproposal = $reviewproposal->create([
+                    'id_pengajuan'      => $request->id_pengajuan,
+                    'status'            => $request->status,
+                    'id_perusahaan'     => $request->id_perusahaan,
                 ]);
 
-                $response = DB::table('pengajuans')
-                                    ->where('id',$id)->get();
+                $response = fractal()
+                    ->item($reviewproposal)
+                    ->transformWith(new ReviewTransformer)
+                    ->toArray();
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'created' => true], 201);
             }
         }
         catch (Exception $e)

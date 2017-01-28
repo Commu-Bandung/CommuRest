@@ -11,9 +11,10 @@ class BantuanTransformer extends  TransformerAbstract
     {
         return [
             'id'               => $bantuan->id,
-            'id_pengajuan'     => $bantuan->id_pengajuan,
+            'id_review'        => $bantuan->id_review,
             'jumlah_dana'      => $bantuan->jumlah_dana,
-            'dibuat'       => $bantuan->created_at->diffForHumans(),
+            'bukti'            => $bantuan->bukti,
+            'dibuat'           => $bantuan->created_at->diffForHumans(),
         ];
     }
 }
