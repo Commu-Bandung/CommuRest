@@ -182,22 +182,36 @@ class ProposalController extends Controller
 
     public function viewHasilReview($id)
     {
-        $response = pengajuan::where([
-            'id_anggota'    => $id,
-            'status_valid'  => 'terima',
-        ]);
-        $response = $response->whereIn('status_rev',['terima','tolak'])->get();
+        $response = DB::table('pengajuans')
+                            ->join('reviewproposals','pengajuans.id','=','reviewproposals.id_pengajuan')
+                            ->select('pengajuans.id','pengajuans.proposal','pengajuans.kategori','pengajuans.event',
+                            'reviewproposals.status_revisi')
+                            ->where([
+                                'id_anggota'    => $id,
+                                'status_valid'  => 'terima',
+                                ]);
+        $response = $response->whereIn('reviewproposals.status_revisi',['terima','tolak'])->get();
+        // $response = pengajuan::where([
+        //     'id_anggota'    => $id,
+        //     'status_valid'  => 'terima',
+        // ]);
+        // $response = $response->whereIn('status_rev',['terima','tolak'])->get();
 
         return response()->json($response, 201);
 
     }
 
-    public function showProposalDiterima()
+    public function showProposalDiterima($id)
     {
         $response = DB::table('pengajuans')
+                            ->join('reviewproposals','pengajuans.id','=','reviewproposals.id_pengajuan')        
+                            ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
+                            ->select('anggotas.nama','anggotas.email','anggotas.komunitas','anggotas.kampus','anggotas.alamatKampus',
+                            'pengajuans.event','pengajuans.proposal','pengajuans.kategori')
                             ->where([
-                                'status_valid'      => 'terima',
-                                'status_rev'        => 'terima',
+                                'pengajuans.status_valid'       => 'terima',
+                                'reviewproposals.status'        => 'terima',
+                                'reviewproposals.id_perusahaan' => $id,
                             ])->get();
 
         return response()->json($response, 201);
