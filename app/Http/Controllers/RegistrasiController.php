@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\anggota;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -23,6 +24,8 @@ class RegistrasiController extends Controller
     ];
     public function register(Request $request, anggota $anggota)
     {
+        $email_in = $request->email;
+
          if (!is_array($request->all()))
         {
             return ['error' => 'request harus berbentuk array'];
@@ -50,10 +53,11 @@ class RegistrasiController extends Controller
                     'deskripsi'         => $request->deskripsi,
                 ]);
 
-                $response = fractal()
-                    ->item($anggota)
-                    ->transformWith(new AnggotaTransformer)
-                    ->toArray();
+               
+                $response = DB::table('anggotas')
+                                    ->where([
+                                        ['email',   '=',$email_in],
+                                    ])->get(); 
 
                 return response()->json(['data' => $response, 'created' => true ], 201);
             }

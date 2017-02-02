@@ -96,13 +96,15 @@ class AdminController extends Controller
                 return response()->json([
                     'updated' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else
             {
               $admin = admin::find($id);
               $admin->update([
                     'nama'      => $request->nama,
+                    'email'     => $request->email,
+                    'password'  => $request->password
               ]);
 
                 $response = fractal()
@@ -110,7 +112,7 @@ class AdminController extends Controller
                     ->transformWith(new AdminTransformer)
                     ->toArray();
 
-                return response()->json($response, 201);
+                return response()->json(['data'=> $response, 'updated' => true], 201);
             }
         }
         catch (Exception $e)

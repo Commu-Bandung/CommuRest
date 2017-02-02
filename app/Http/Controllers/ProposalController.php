@@ -30,6 +30,7 @@ class ProposalController extends Controller
         'status'          => 'required', 
         'id_perusahaan'   => 'required',
     ];
+
     public function ajukan(Request $request, pengajuan $pengajuan)
     {
         if (!is_array($request->all()))
@@ -75,7 +76,11 @@ class ProposalController extends Controller
     public function showPengajuanByUser(anggota $anggota,$id)
     {
         $response = DB::table('pengajuans')
-                            ->where('id_anggota',$id)->get();
+                            ->join('reviewproposals','pengajuans.id','=','reviewproposals.id_pengajuan')
+                            ->select('pengajuans.proposal','pengajuans.event','pengajuans.kategori','pengajuans.status_valid','reviewproposals.status')
+                            ->where('id_anggota',$id)
+                            ->orderBy('pengajuans.created_at','desc')
+                            ->get();
 
         return response()->json($response, 201);        
 
@@ -83,18 +88,23 @@ class ProposalController extends Controller
 
     public function showPengajuan(pengajuan $pengajuan)
     {      
-         $response = pengajuan::where('status_valid','belum')->get();
+         $response = pengajuan::where('status_valid','belum')
+                                    ->orderBy('created_at','desc')                                    
+                                    ->get();
 
         return response()->json($response, 201);
     }
 
     public function detailPengajuan($id, pengajuan $pengajuan)
     {
-        $pengajuan = $pengajuan->findOrFail($id);
-        return fractal()
-            ->item($pengajuan)
-            ->transformWith(new ProposalTransformer)
-            ->toArray();
+        $response = DB::table('pengajuans')
+                            ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
+                            ->select('pengajuans.id','pengajuans.proposal','pengajuans.event','anggotas.kampus','anggotas.email','anggotas.alamatKampus')
+                            ->where('pengajuans.id',$id)
+                            ->get();
+        
+        return response()->json($response, 201);
+
     }
 
 
@@ -112,7 +122,7 @@ class ProposalController extends Controller
                 return response()->json([
                     'validasi' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else
             {
@@ -124,7 +134,7 @@ class ProposalController extends Controller
                 $response = DB::table('pengajuans')
                                     ->where('id',$id)->get();
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'validasi' => true], 201);
             }
         }
         catch (Exception $e)
@@ -135,7 +145,9 @@ class ProposalController extends Controller
     }
     public function showPengajuanValid(pengajuan $pengajuan)
     {      
-         $response = pengajuan::where('status_valid','terima')->get();
+         $response = pengajuan::where('status_valid','terima')
+                                    ->orderBy('created_at','desc')
+                                    ->get();
 
         return response()->json($response, 201);
     }
@@ -152,9 +164,9 @@ class ProposalController extends Controller
             if($validator->fails())
             {
                 return response()->json([
-                    'validasi' => false,
+                    'created' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else
             {
@@ -185,17 +197,14 @@ class ProposalController extends Controller
         $response = DB::table('pengajuans')
                             ->join('reviewproposals','pengajuans.id','=','reviewproposals.id_pengajuan')
                             ->select('pengajuans.id','pengajuans.proposal','pengajuans.kategori','pengajuans.event',
-                            'reviewproposals.status_revisi')
+                            'reviewproposals.status')
                             ->where([
                                 'id_anggota'    => $id,
                                 'status_valid'  => 'terima',
                                 ]);
-        $response = $response->whereIn('reviewproposals.status_revisi',['terima','tolak'])->get();
-        // $response = pengajuan::where([
-        //     'id_anggota'    => $id,
-        //     'status_valid'  => 'terima',
-        // ]);
-        // $response = $response->whereIn('status_rev',['terima','tolak'])->get();
+        $response = $response->whereIn('reviewproposals.status',['terima','tolak'])
+                                ->orderBy('reviewproposals.created_at','desc')                                
+                                ->get();
 
         return response()->json($response, 201);
 
@@ -207,12 +216,31 @@ class ProposalController extends Controller
                             ->join('reviewproposals','pengajuans.id','=','reviewproposals.id_pengajuan')        
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
                             ->select('anggotas.nama','anggotas.email','anggotas.komunitas','anggotas.kampus','anggotas.alamatKampus',
-                            'pengajuans.event','pengajuans.proposal','pengajuans.kategori')
+                            'pengajuans.event','pengajuans.proposal','pengajuans.kategori','reviewproposals.id')
                             ->where([
                                 'pengajuans.status_valid'       => 'terima',
                                 'reviewproposals.status'        => 'terima',
                                 'reviewproposals.id_perusahaan' => $id,
-                            ])->get();
+                            ])
+                            ->orderBy('pengajuans.updated_at','desc')
+                            ->get();
+
+        return response()->json($response, 201);
+    }
+     public function showProposalDiterimaDetail($id)
+    {
+        $response = DB::table('pengajuans')
+                            ->join('reviewproposals','pengajuans.id','=','reviewproposals.id_pengajuan')        
+                            ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
+                            ->select('anggotas.nama','anggotas.email','anggotas.komunitas','anggotas.kampus','anggotas.alamatKampus',
+                            'pengajuans.event','pengajuans.proposal','pengajuans.kategori','reviewproposals.id')
+                            ->where([
+                                'pengajuans.status_valid'       => 'terima',
+                                'reviewproposals.status'        => 'terima',
+                                'reviewproposals.id'            => $id,
+                            ])
+                            ->orderBy('pengajuans.updated_at','desc')
+                            ->get();
 
         return response()->json($response, 201);
     }

@@ -39,6 +39,7 @@ Route::get('anggota/hasil/{id}','ProposalController@viewHasilReview');
 Route::get('admin/carievent/{event}','ProposalController@seachEvent');
 
 Route::get('perusahaan/diterima/{id}','ProposalController@showProposalDiterima');
+Route::get('perusahaan/diterima/detail/{id}','ProposalController@showProposalDiterimaDetail');
 Route::post('perusahaan/bantuan','BantuanController@createBantuan');
 Route::put('perusahaan/ubahbantuan/{id}','BantuanController@updateBantuan');
 Route::get('anggota/viewbantuan/{id}','BantuanController@viewBantuan');

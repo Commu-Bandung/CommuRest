@@ -13,6 +13,7 @@ class AdminTransformer extends  TransformerAbstract
             'id'        => $admin->id,
             'nama'      => $admin->nama,
             'email'     => $admin->email,
+            'password'  => $admin->password,
             'api_token' => $admin->api_token,
             'registered'=> $admin->created_at->diffForHumans(),
         ];

@@ -53,7 +53,7 @@ class PerusahaanController extends Controller
                 return response()->json([
                     'created' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else
             {
@@ -62,7 +62,7 @@ class PerusahaanController extends Controller
                     'alamat'        => $request->alamat,
                     'email'         => $request->email,
                     'api_token'     => bcrypt($request->email),
-                    'password'      => bcrypt($request->password),
+                    'password'      => $request->password,
                     'deskripsi'     => $request->deskripsi,
                 ]);
 
@@ -71,7 +71,7 @@ class PerusahaanController extends Controller
                     ->transformWith(new PerusahaanTransformer)
                     ->toArray();
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response,'created' => true], 201);
             }
         }
         catch (Exception $e)

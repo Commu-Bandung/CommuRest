@@ -35,7 +35,7 @@ class BantuanController extends Controller
                 return response()->json([
                     'created' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else
             {
@@ -50,7 +50,7 @@ class BantuanController extends Controller
                     ->transformWith(new BantuanTransformer)
                     ->toArray();
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'created' => true], 201);
             }
         }
         catch (Exception $e)
@@ -109,6 +109,7 @@ class BantuanController extends Controller
                             ->join('perusahaans','perusahaans.id','=','reviewproposals.id_perusahaan')
                             ->select('perusahaans.nama','perusahaans.alamat','perusahaans.email','bantuans.jumlah_dana','bantuans.bukti','pengajuans.kategori','pengajuans.event')
                             ->where('id_anggota',$id)
+                            ->orderBy('bantuans.created_at','desc')
                             ->get();
         return response()->json($response, 201);
     }
@@ -120,8 +121,9 @@ class BantuanController extends Controller
                             ->join('pengajuans','reviewproposals.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
                             ->join('perusahaans','perusahaans.id','=','reviewproposals.id_perusahaan')                            
-                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','bantuans.jumlah_dana','pengajuans.proposal','pengajuans.kategori','pengajuans.event')
+                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','bantuans.jumlah_dana','pengajuans.proposal','pengajuans.kategori','pengajuans.event', 'bantuans.bukti')
                             ->where('perusahaans.id',$id)
+                            ->orderBy('bantuans.created_at','desc')                            
                             ->get();
         return response()->json($bantuan, 201);
     }

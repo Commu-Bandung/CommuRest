@@ -12,7 +12,7 @@ use App\Transformers\KerjasamaTransformer;
 class KerjasamaController extends Controller
 {
     protected $rules = [
-        'id_review'          => 'required|integer',
+        'id_review'          => 'required',
         'produk'             => 'required|string',
         'jumlah'             => 'required|numeric',
     ];
@@ -35,14 +35,14 @@ class KerjasamaController extends Controller
                 return response()->json([
                     'created' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else
             {
                 $kerjasama = $kerjasama->create([
-                    'id_review'   => $request->id_review,
                     'produk'         => $request->produk,
                     'jumlah'         => $request->jumlah,
+                    'id_review'      => $request->id_review,
                 ]);
 
                 $response = fractal()
@@ -50,7 +50,7 @@ class KerjasamaController extends Controller
                     ->transformWith(new KerjasamaTransformer)
                     ->toArray();
 
-                return response()->json($response, 201);
+                return response()->json(['data' => $response, 'created' => true], 201);
             }
         }
         catch (Exception $e)
@@ -106,8 +106,9 @@ class KerjasamaController extends Controller
                             ->join('pengajuans','reviewproposals.id_pengajuan','=','pengajuans.id')
                             ->join('anggotas','pengajuans.id_anggota','=','anggotas.id')
                             ->join('perusahaans','perusahaans.id','=','reviewproposals.id_perusahaan')
-                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','kerjasamas.produk','kerjasamas.jumlah','kerjasamas.id')
+                            ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus','kerjasamas.produk','kerjasamas.jumlah','kerjasamas.id','anggotas.kampus','pengajuans.event')
                             ->where('id_perusahaan',$id)
+                            ->orderBy('kerjasamas.created_at','desc')
                             ->get();
         return response()->json($kerjasama, 201);
     }
@@ -121,6 +122,7 @@ class KerjasamaController extends Controller
                             ->join('perusahaans','perusahaans.id','=','reviewproposals.id_perusahaan')
                             ->select('anggotas.nama','anggotas.email','anggotas.kampus','anggotas.alamatKampus', 'perusahaans.nama','perusahaans.alamat','perusahaans.email','kerjasamas.produk','kerjasamas.jumlah','pengajuans.proposal','pengajuans.event')
                             ->where('id_anggota',$id)
+                            ->orderBy('kerjasamas.created_at','desc')                            
                             ->get();
         return response()->json($kerjasama,201);
     }

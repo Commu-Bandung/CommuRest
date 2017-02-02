@@ -52,7 +52,7 @@ class LoginController extends Controller
                                         ['email',   '=',$email_in],
                                         ['password','=',$password_in],
                                     ])->get(); 
-                $success= true;
+                $success= true; 
 
 
                 return response()->json(['data' => $response, 'login' => true], 201);
@@ -147,7 +147,7 @@ class LoginController extends Controller
                 return response()->json([
                     'login' => false,
                     'errors'  => $validator->errors()->all()
-                ], 500);
+                ], 200);
             }
             else if($loginPerusahaan > 0)
             {

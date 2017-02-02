@@ -16,7 +16,6 @@ class ProposalTransformer extends  TransformerAbstract{
             'kategori'      => $pengajuan->kategori,
             'deskripsi'     => $pengajuan->deskripsi,
             'status_valid'  => $pengajuan->status_valid,
-            'status_rev'    => $pengajuan->status_rev,
             'published'     => $pengajuan->created_at->diffForHumans(),
         ];
     }
